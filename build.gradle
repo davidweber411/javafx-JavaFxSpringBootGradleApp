@@ -8,19 +8,14 @@ plugins {
 }
 
 group = 'com.wedasoft'
-version = '0.0.4-SNAPSHOT'
+version = '1.0.0'
 
 repositories {
     mavenCentral()
-    //    mavenLocal()
+    // mavenLocal()
 }
 
 ext {
-//    junitVersion = '5.10.0'
-//    assertjVersion = '3.24.2'
-//    hibernateVersion = '6.2.7.Final'
-//    hibernateJpaModelGenVersion = "${hibernateVersion}"
-//    h2databaseVersion = '2.2.220'
     javaFxVersion = "17.0.10"
     javaVersion = 17
 }
@@ -45,20 +40,19 @@ dependencies {
     implementation "org.openjfx:javafx-fxml:${javaFxVersion}"
     implementation "org.openjfx:javafx-base:${javaFxVersion}"
     implementation "org.openjfx:javafx-graphics:${javaFxVersion}"
+
+    // WedasoftFX
+    implementation 'com.wedasoft:wedasoftfxguicommons:1.0.0'
+    implementation 'com.wedasoft:wedasoftfxtestbase:1.0.0'
 }
 
 application {
-    mainClass = 'com.wedasoft.JavaFxSpringBootGradleApp.JfxSpringBootAppLauncher'
+    mainClass = 'com.wedasoft.javafxspringbootgradleapp.JfxSpringBootAppLauncher'
 }
 
 javafx {
     version = "${javaFxVersion}"
 }
-
-//tasks.withType(JavaCompile) {
-//    options.encoding = 'UTF-8'
-//    options.release = Integer.parseInt("${jdkCompileVersion}")
-//}
 
 configurations {
     compileOnly {

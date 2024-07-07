@@ -1,4 +1,4 @@
-package com.wedasoft.JavaFxSpringBootGradleApp.persistence.todo;
+package com.wedasoft.javafxspringbootgradleapp.persistence.todo;
 
 import jakarta.persistence.*;
 import lombok.*;

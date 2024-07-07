@@ -6,13 +6,14 @@
 <?import javafx.scene.layout.*?>
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0"
             prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.wedasoft.JavaFxSpringBootGradleApp.views.UiController">
+            fx:controller="com.wedasoft.javafxspringbootgradleapp.views.UiController">
     <top>
         <MenuBar BorderPane.alignment="CENTER">
             <menus>
                 <Menu mnemonicParsing="false" text="File">
                     <items>
                         <MenuItem mnemonicParsing="false" onAction="#onExitMenuItemClick" text="Exit"/>
+                        <MenuItem mnemonicParsing="false" onAction="#onOpenDialogMenuItemClick" text="Open non-spring component dialog"/>
                     </items>
                 </Menu>
             </menus>

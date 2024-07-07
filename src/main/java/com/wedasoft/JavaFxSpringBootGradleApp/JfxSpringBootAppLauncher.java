@@ -1,4 +1,4 @@
-package com.wedasoft.JavaFxSpringBootGradleApp;
+package com.wedasoft.javafxspringbootgradleapp;
 
 import javafx.application.Application;
 import javafx.application.HostServices;
@@ -23,7 +23,6 @@ public class JfxSpringBootAppLauncher {
     public static void main(String[] args) {
         Application.launch(JfxSpringBootApp.class, args);
     }
-
 
     public static class JfxSpringBootApp extends Application {
 

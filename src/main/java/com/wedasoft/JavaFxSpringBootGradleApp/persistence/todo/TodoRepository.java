@@ -1,4 +1,4 @@
-package com.wedasoft.JavaFxSpringBootGradleApp.persistence.todo;
+package com.wedasoft.javafxspringbootgradleapp.persistence.todo;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
