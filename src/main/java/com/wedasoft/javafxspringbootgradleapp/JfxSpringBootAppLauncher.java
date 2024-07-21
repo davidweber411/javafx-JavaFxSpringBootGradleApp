@@ -51,10 +51,6 @@ public class JfxSpringBootAppLauncher {
             System.exit(0);
         }
 
-        public static <T> T getBean(Class<T> beanClass) {
-            return springApplicationContext.getBean(beanClass);
-        }
-
     }
 
     @Component
