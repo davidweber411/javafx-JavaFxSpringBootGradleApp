@@ -61,8 +61,7 @@ public class UiController implements Initializable {
                 true,
                 getClass().getResource("/com/wedasoft/javafxspringbootgradleapp/views/dialog.fxml"),
                 new Dimension2D(600, 400),
-                (Consumer<DialogController>) DialogController::init,
-                null);
+                (Consumer<DialogController>) DialogController::init);
     }
 
 }

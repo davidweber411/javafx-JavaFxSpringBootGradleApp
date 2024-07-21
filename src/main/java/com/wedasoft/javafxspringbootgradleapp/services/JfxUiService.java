@@ -23,24 +23,24 @@ public class JfxUiService {
     public void createAndShowFxmlDialog(
             String title, boolean dialogIsModal, boolean dialogIsResizeable,
             URL absoluteFxmlFileUrl, Dimension2D sceneSize,
-            Consumer initMethodOfController, Runnable callbackOnDialogClose)
+            Consumer initMethodOfController)
             throws IOException {
 
         createFxmlDialog(
                 title, dialogIsModal, dialogIsResizeable,
                 absoluteFxmlFileUrl, sceneSize,
-                initMethodOfController, callbackOnDialogClose).showAndWait();
+                initMethodOfController).showAndWait();
     }
 
     public Stage createFxmlDialog(
             String title, boolean dialogIsModal, boolean dialogIsResizeable,
             URL absoluteFxmlFileUrl, Dimension2D sceneSize,
-            Consumer initMethodOfController, Runnable callbackOnDialogClose)
+            Consumer initMethodOfController)
             throws IOException {
 
         FXMLLoader loader = new FXMLLoader(absoluteFxmlFileUrl);
         loader.setControllerFactory(springApplicationContext::getBean);
-        Parent root = (Parent) loader.load();
+        Parent root = loader.load();
         Object viewController = loader.getController();
         Scene scene = sceneSize == null ? new Scene(root) : new Scene(root, sceneSize.getWidth(), sceneSize.getHeight());
         Stage stage = new Stage();
@@ -48,14 +48,6 @@ public class JfxUiService {
         stage.initModality(dialogIsModal ? Modality.APPLICATION_MODAL : Modality.NONE);
         stage.setResizable(dialogIsResizeable);
         stage.setScene(scene);
-        stage.setOnHidden((event) -> {
-            event.consume();
-            if (callbackOnDialogClose != null) {
-                callbackOnDialogClose.run();
-            }
-
-            stage.close();
-        });
         if (initMethodOfController != null) {
             initMethodOfController.accept(viewController);
         }
