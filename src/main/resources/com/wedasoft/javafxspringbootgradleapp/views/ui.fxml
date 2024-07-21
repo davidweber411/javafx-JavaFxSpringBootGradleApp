@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0"
+            prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.wedasoft.javafxspringbootgradleapp.views.UiController">
+    <top>
+        <MenuBar BorderPane.alignment="CENTER">
+            <menus>
+                <Menu mnemonicParsing="false" text="File">
+                    <items>
+                        <MenuItem mnemonicParsing="false" onAction="#onExitMenuItemClick" text="Exit"/>
+                        <MenuItem mnemonicParsing="false" onAction="#onOpenDialogMenuItemClick" text="Open non-spring component dialog"/>
+                    </items>
+                </Menu>
+            </menus>
+        </MenuBar>
+    </top>
+    <bottom>
+        <HBox spacing="10.0" BorderPane.alignment="CENTER">
+            <children>
+                <TextField fx:id="todoTf" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS"/>
+                <Button mnemonicParsing="false" onAction="#onAddTodoBtnClick" text="Add todo"/>
+                <Button mnemonicParsing="false" onAction="#onDeleteAllTodosBtnClick" text="Delete all todos"/>
+            </children>
+            <BorderPane.margin>
+                <Insets/>
+            </BorderPane.margin>
+            <padding>
+                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+            </padding>
+        </HBox>
+    </bottom>
+    <center>
+        <ListView fx:id="todosListView" BorderPane.alignment="CENTER"/>
+    </center>
+</BorderPane>
