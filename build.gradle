@@ -8,7 +8,7 @@ plugins {
 }
 
 group = 'com.wedasoft'
-version = '2.1.0'
+version = '2.2.0'
 
 repositories {
     mavenCentral()
@@ -18,6 +18,7 @@ repositories {
 ext {
     javaFxVersion = "17.0.10"
     javaVersion = 17
+    gradleTaskGroupName = 'application javafx spring boot'
 }
 
 dependencies {
@@ -82,4 +83,19 @@ hibernate {
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+
+//noinspection ConfigurationAvoidance
+task runJfxSpringBootApp(type: DefaultTask) {
+    group = "${gradleTaskGroupName}"
+    dependsOn bootRun
+    //    doFirst { println("Run runJfxSpringBootApp") }
+}
+
+//noinspection ConfigurationAvoidance
+task buildExecutableJar(type: DefaultTask) {
+    group = "${gradleTaskGroupName}"
+    dependsOn bootJar
+    //    doFirst { println("Run buildExecutableJar") }
 }
