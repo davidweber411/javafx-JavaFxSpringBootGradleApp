@@ -17,7 +17,6 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 
 @SpringBootApplication
-@SuppressWarnings("LombokGetterMayBeUsed")
 public class JfxSpringBootAppLauncher {
 
     public static void main(String[] args) {
@@ -26,26 +25,22 @@ public class JfxSpringBootAppLauncher {
 
     public static class JfxSpringBootApp extends Application {
 
-        private static Application javaFxApplication;
         private static ConfigurableApplicationContext springApplicationContext;
 
         @Override
         public void init() {
-            ApplicationContextInitializer<GenericApplicationContext> initializer = applicationContext -> {
-                applicationContext.registerBean(Application.class, () -> JfxSpringBootApp.this);
-                applicationContext.registerBean(Parameters.class, this::getParameters);
-                applicationContext.registerBean(HostServices.class, this::getHostServices);
-            };
-
             springApplicationContext = new SpringApplicationBuilder()
                     .sources(JfxSpringBootAppLauncher.class)
-                    .initializers(initializer)
+                    .initializers((ApplicationContextInitializer<GenericApplicationContext>) applicationContext -> {
+                        applicationContext.registerBean(Application.class, () -> this);
+                        applicationContext.registerBean(Parameters.class, this::getParameters);
+                        applicationContext.registerBean(HostServices.class, this::getHostServices);
+                    })
                     .run(getParameters().getRaw().toArray(new String[0]));
         }
 
         @Override
         public void start(Stage primaryStage) {
-            javaFxApplication = this;
             springApplicationContext.publishEvent(new JfxApplicationStartEvent(primaryStage));
         }
 
@@ -56,16 +51,8 @@ public class JfxSpringBootAppLauncher {
             System.exit(0);
         }
 
-        public static <T> T getBean(Class<T> requiredType) {
-            return getSpringApplicationContext().getBean(requiredType);
-        }
-
-        public static ApplicationContext getSpringApplicationContext() {
-            return springApplicationContext;
-        }
-
-        public static Application getJavaFxApplication() {
-            return javaFxApplication;
+        public static <T> T getBean(Class<T> beanClass) {
+            return springApplicationContext.getBean(beanClass);
         }
 
     }
