@@ -13,13 +13,12 @@ A simple running application based on JavaFX, Spring Boot and Gradle.
 | Gradle        | 8.8 (Gradle Wrapper) |
 | Module system | Non modular          |
 
-### Features: Run, package, ...
+### Features: Run and package
 
-| Feature                         | How to use                                                     |
-|---------------------------------|----------------------------------------------------------------|
-| Run the application in the IDE. | Use the gradle task <code>bootRun</code>.                      |
-| Package as executable JAR.      | Use the gradle task <code>bootJar</code>.                      |
-| Display a splash screen.        | Simply configure the class <code>SplashScreenPreloader</code>. |
+| Feature                         | How to use                                |
+|---------------------------------|-------------------------------------------|
+| Run the application in the IDE. | Use the gradle task <code>bootRun</code>. |
+| Package as executable JAR.      | Use the gradle task <code>bootJar</code>. |
 
 ### Features: While coding
 
@@ -28,6 +27,12 @@ A simple running application based on JavaFX, Spring Boot and Gradle.
 | Dependency injection in Spring components.     | Use e. g. constructor or field injection, just like in Spring Boot. |
 | Get Spring application context during runtime. | Use the bean <code>ApplicationContext</code>.                       |
 | Get JavaFX application during runtime.         | Use the bean <code>Application</code>.                              |
+
+### Features: Other
+
+| Feature                  | How to use                                                     |
+|--------------------------|----------------------------------------------------------------|
+| Display a splash screen. | Simply configure the class <code>SplashScreenPreloader</code>. |
 
 ### Example: FXML Controllers as Spring components
 
