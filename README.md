@@ -27,3 +27,23 @@ A simple running application based on JavaFX, Spring Boot and Gradle.
 | Dependency injection in Spring components.     | Use e. g. constructor or field injection, just like in Spring Boot. |
 | Get Spring application context during runtime. | Use the bean <code>ApplicationContext</code>.                       |
 | Get JavaFX application during runtime.         | Use the bean <code>Application</code>.                              |
+
+### Example: FXML Controllers as Spring components
+
+#### Step 1: Make the controller a Spring component
+
+    @Component
+    @RequiredArgsConstructor
+    public class UiController implements Initializable {
+    
+    }
+
+#### Step 2: Configure the FXMLLoader
+
+    FXMLLoader loader = new FXMLLoader(fxmlFileUrl);
+    // The FXMLLoader shall use the spring context as controller factory. 
+    loader.setControllerFactory(springApplicationContext::getBean);
+
+#### Step 3: Profit!
+
+Profit.

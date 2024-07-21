@@ -11,6 +11,8 @@ import javafx.geometry.Dimension2D;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -19,6 +21,7 @@ import java.util.ResourceBundle;
 import java.util.function.Consumer;
 
 @Component
+@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 @RequiredArgsConstructor
 public class UiController implements Initializable {
 
