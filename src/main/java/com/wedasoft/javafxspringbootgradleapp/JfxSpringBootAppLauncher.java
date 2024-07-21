@@ -7,6 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 
 @SpringBootApplication
+@Slf4j
 public class JfxSpringBootAppLauncher {
 
     public static void main(String[] args) {
@@ -29,6 +31,7 @@ public class JfxSpringBootAppLauncher {
 
         @Override
         public void init() {
+            log.info("JavaFx Spring Boot lifecycle: Executing overridden 'init()' of JavaFx Application...");
             springApplicationContext = new SpringApplicationBuilder()
                     .sources(JfxSpringBootAppLauncher.class)
                     .initializers((ApplicationContextInitializer<GenericApplicationContext>) applicationContext -> {
@@ -41,11 +44,14 @@ public class JfxSpringBootAppLauncher {
 
         @Override
         public void start(Stage primaryStage) {
+            log.info("JavaFx Spring Boot lifecycle: Executing overridden 'start()' of JavaFx Application...");
+            log.info("JavaFx Spring Boot lifecycle: Publishing  'JfxApplicationStartEvent'...");
             springApplicationContext.publishEvent(new JfxApplicationStartEvent(primaryStage));
         }
 
         @Override
         public void stop() {
+            log.info("JavaFx Spring Boot lifecycle: Executing overridden 'stop()' of JavaFx Application...");
             springApplicationContext.close();
             Platform.exit();
             System.exit(0);
@@ -71,6 +77,7 @@ public class JfxSpringBootAppLauncher {
         @Override
         public void onApplicationEvent(JfxApplicationStartEvent event) {
             try {
+                log.info("JavaFx Spring Boot lifecycle: Computing 'JfxApplicationStartEvent'...");
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/wedasoft/javafxspringbootgradleapp/views/ui.fxml"));
                 fxmlLoader.setControllerFactory(springApplicationContext::getBean);
                 Parent root = fxmlLoader.load();
@@ -79,6 +86,7 @@ public class JfxSpringBootAppLauncher {
                 stage.setScene(scene);
                 stage.setTitle(this.applicationTitle);
                 stage.show();
+                log.info("JavaFx Spring Boot lifecycle: JavaFx Spring boot application started.");
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
