@@ -85,17 +85,129 @@ tasks.named('test') {
     useJUnitPlatform()
 }
 
+//noinspection ConfigurationAvoidance
+task cleanBuildDir(type: DefaultTask) {
+    group = "${gradleTaskGroupName}"
+    dependsOn clean
+}
 
 //noinspection ConfigurationAvoidance
 task runJfxSpringBootApp(type: DefaultTask) {
     group = "${gradleTaskGroupName}"
     dependsOn bootRun
-    //    doFirst { println("Run runJfxSpringBootApp") }
 }
 
 //noinspection ConfigurationAvoidance
 task buildExecutableJar(type: DefaultTask) {
     group = "${gradleTaskGroupName}"
     dependsOn bootJar
-    //    doFirst { println("Run buildExecutableJar") }
 }
+
+//noinspection ConfigurationAvoidance
+task packageAsExeWithJPackage(type: Exec) {
+    group = "${gradleTaskGroupName}"
+    dependsOn buildExecutableJar
+
+    doFirst {
+        println("Packaging as EXE with JPackage...")
+
+        File mainJar = file("$buildDir/libs").listFiles().find { it.name.endsWith('.jar') }
+        if (mainJar == null) {
+            throw new GradleException("No JAR file found in build/libs")
+        }
+
+        def applicationProperties = new Properties()
+        file('src/main/resources/application.properties').withInputStream { applicationProperties.load(it) }
+        def appNameFromApplicationProperties = applicationProperties['spring.application.name'] ?: 'DefaultAppName'
+
+        def jPackageOutputDir = file("$buildDir/jpackage")
+
+        // Clean up the output directory before running jpackage
+        if (jPackageOutputDir.exists()) {
+            jPackageOutputDir.deleteDir()
+        }
+        jPackageOutputDir.mkdirs()
+
+        def jPackageCommand = [
+                "jpackage",
+                "--type", "app-image",
+                "--input", file("$buildDir/libs").toString(),
+                "--main-jar", mainJar.name,
+                "--dest", jPackageOutputDir.toString(),
+                "--name", appNameFromApplicationProperties,
+                "--app-version", version
+        ]
+        println "Executing command: ${jPackageCommand.join(' ')}"
+        commandLine jPackageCommand
+    }
+}
+
+////task packageAsExeWithJPackage(type: DefaultTask) {
+//task packageAsExeWithJPackage(type: Exec) {
+//    group = "${gradleTaskGroupName}"
+//    //    dependsOn buildExecutableJar
+//
+//    /* build executable jar */
+//    //    println("Building executable JAR...")
+//    //    println("Built executable JAR.")
+//
+//    /* check jdk version */
+//
+//    /* package with jpackage */
+//    println("Packaging as EXE with JPackage...")
+//
+//    File mainJar = file("$buildDir/libs").listFiles().find { it.name.endsWith('.jar') }
+//    if (mainJar == null) {
+//        //        throw new GradleException("No JAR file found in build/libs")
+//        println("No JAR file found in build/libs.");
+//        return;
+//    }
+//
+//    def applicationProperties = new Properties()
+//    file('src/main/resources/application.properties').withInputStream { applicationProperties.load(it) }
+//    def appNameFromApplicationProperties = applicationProperties['spring.application.name'] ?: 'DefaultAppName'
+//    //    def iconPath = "--icon \"C:\\Users\\weber\\Pictures\\bluebird.jpg\"";
+//
+//    def jPackageCommand = [
+//            "jpackage",
+//            "--type", "app-image",
+//            "--input", file("$buildDir/libs").toString(),
+//            "--main-jar", mainJar.name,
+//            "--dest", file("$buildDir/libs").toString(),
+//            "--name", appNameFromApplicationProperties,
+//            "--app-version", version
+//    ]
+//    println "Executing command: ${jPackageCommand.join(' ')}"
+//    commandLine jPackageCommand
+//
+////    commandLine(
+////            "jpackage",
+////            "--type", "app-image",
+////            "--input", file("$buildDir/libs"),
+////            "--main-jar", mainJar.name,
+////            "--dest", file("$buildDir/libs"),
+//////            "--output", file("$buildDir/libs"), // baut das project im project root ohne das heir, geht aber nicht mit!
+////            "--name", appNameFromApplicationProperties,
+////            "--app-version", version)
+//}
+
+/*
+Package as exe with jpackage:
+"C:\Users\weber\Wedasoft\JavaFxProjectManager\included-openjdk-17-windows-x64\bin\jpackage.exe"
+--type "app-image"
+--dest "C:\Users\weber\Desktop"
+--main-jar "JavaFxSpringBootGradleApp-2.3.1.jar"
+--input "C:\Users\weber\Wedasoft\JavaFxProjectManager\tmp"
+--name "AbcApp"
+--app-version "6.7.8"
+--icon "C:\Users\weber\Pictures\bluebird.jpg"
+ */
+/*
+jpackage
+--type app-image
+--dest D:\Projekte\IdeaProjects\OpenSourceProjekte\JavaFxSpringBootGradleApp\build\libs
+--main-jar JavaFxSpringBootGradleApp-2.3.1.jar
+--input D:\Projekte\IdeaProjects\OpenSourceProjekte\JavaFxSpringBootGradleApp\build\libs
+--name JavaFxSpringBootGradleApp
+--app-version 2.3.1
+*/
