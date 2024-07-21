@@ -22,12 +22,13 @@ import java.io.IOException;
 public class JfxSpringBootAppLauncher {
 
     public static final String LOG_PREFIX = "JavaFx Spring Boot lifecycle: ";
+    public static final String SPLASHSCREEN_CLASS_PATH = "com.wedasoft.javafxspringbootgradleapp.SplashScreenPreloader";
 
     public static void main(String[] args) {
         log.info(LOG_PREFIX + "Starting application via main method...");
 
         log.info(LOG_PREFIX + "Set full qualified class name as system property for defining the splash screen preloader.");
-        System.setProperty("javafx.preloader", "com.wedasoft.javafxspringbootgradleapp.SplashScreenPreloader");
+        System.setProperty("javafx.preloader", SPLASHSCREEN_CLASS_PATH);
 
         log.info(LOG_PREFIX + "Launching the JavaFx application.");
         Application.launch(JfxSpringBootApp.class, args);

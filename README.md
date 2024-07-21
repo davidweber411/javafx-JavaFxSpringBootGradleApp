@@ -13,12 +13,13 @@ A simple running application based on JavaFX, Spring Boot and Gradle.
 | Gradle        | 8.8 (Gradle Wrapper) |
 | Module system | Non modular          |
 
-### Features: Run and package
+### Features: Run, package, ...
 
-| Feature                         | How to use                                |
-|---------------------------------|-------------------------------------------|
-| Run the application in the IDE. | Use the gradle task <code>bootRun</code>. |
-| Package as executable JAR.      | Use the gradle task <code>bootJar</code>. |
+| Feature                         | How to use                                                     |
+|---------------------------------|----------------------------------------------------------------|
+| Run the application in the IDE. | Use the gradle task <code>bootRun</code>.                      |
+| Package as executable JAR.      | Use the gradle task <code>bootJar</code>.                      |
+| Display a splash screen.        | Simply configure the class <code>SplashScreenPreloader</code>. |
 
 ### Features: While coding
 
