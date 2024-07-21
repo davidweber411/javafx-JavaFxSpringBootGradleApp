@@ -18,7 +18,6 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.function.Consumer;
 
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
@@ -64,7 +63,7 @@ public class UiController implements Initializable {
                 true,
                 getClass().getResource("/com/wedasoft/javafxspringbootgradleapp/views/dialog.fxml"),
                 new Dimension2D(600, 400),
-                (Consumer<DialogController>) DialogController::init);
+                dialogController -> ((DialogController) dialogController).init());
     }
 
 }

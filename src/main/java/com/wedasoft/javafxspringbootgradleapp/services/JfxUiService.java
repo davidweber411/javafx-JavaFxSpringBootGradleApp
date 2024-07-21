@@ -23,7 +23,7 @@ public class JfxUiService {
     public void createAndShowFxmlDialog(
             String title, boolean dialogIsModal, boolean dialogIsResizeable,
             URL absoluteFxmlFileUrl, Dimension2D sceneSize,
-            Consumer initMethodOfController)
+            Consumer<Object> initMethodOfController)
             throws IOException {
 
         createFxmlDialog(
@@ -35,7 +35,7 @@ public class JfxUiService {
     public Stage createFxmlDialog(
             String title, boolean dialogIsModal, boolean dialogIsResizeable,
             URL absoluteFxmlFileUrl, Dimension2D sceneSize,
-            Consumer initMethodOfController)
+            Consumer<Object> initMethodOfController)
             throws IOException {
 
         FXMLLoader loader = new FXMLLoader(absoluteFxmlFileUrl);
