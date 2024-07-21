@@ -15,8 +15,6 @@ import org.springframework.stereotype.Component;
 public class DialogController {
 
     private final TodoRepository todoRepository;
-
-    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection") // The beans is created but not recognized :(
     private final Application jfxApplication;
 
     @FXML
