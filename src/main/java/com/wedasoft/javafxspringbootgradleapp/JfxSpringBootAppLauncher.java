@@ -46,8 +46,7 @@ public class JfxSpringBootAppLauncher {
         @Override
         public void start(Stage primaryStage) {
             javaFxApplication = this;
-            springApplicationContext.publishEvent(
-                    new com.wedasoft.javafxspringbootgradleapp.JfxSpringBootAppLauncher.JfxApplicationStartEvent(primaryStage));
+            springApplicationContext.publishEvent(new JfxApplicationStartEvent(primaryStage));
         }
 
         @Override
@@ -72,7 +71,7 @@ public class JfxSpringBootAppLauncher {
     }
 
     @Component
-    public static class JfxApplicationStartEventListener implements ApplicationListener<com.wedasoft.javafxspringbootgradleapp.JfxSpringBootAppLauncher.JfxApplicationStartEvent> {
+    public static class JfxApplicationStartEventListener implements ApplicationListener<JfxApplicationStartEvent> {
 
         @Value("${spring.application.name}")
         private final String applicationTitle;
@@ -87,7 +86,7 @@ public class JfxSpringBootAppLauncher {
         }
 
         @Override
-        public void onApplicationEvent(com.wedasoft.javafxspringbootgradleapp.JfxSpringBootAppLauncher.JfxApplicationStartEvent event) {
+        public void onApplicationEvent(JfxApplicationStartEvent event) {
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/wedasoft/javafxspringbootgradleapp/views/ui.fxml"));
                 fxmlLoader.setControllerFactory(springApplicationContext::getBean);
