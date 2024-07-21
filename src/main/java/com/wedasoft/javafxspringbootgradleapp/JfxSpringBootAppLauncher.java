@@ -21,15 +21,15 @@ import java.io.IOException;
 @Slf4j
 public class JfxSpringBootAppLauncher {
 
-    public static final String LOG_PREFIX = "JavaFx Spring Boot lifecycle";
+    public static final String LOG_PREFIX = "JavaFx Spring Boot lifecycle: ";
 
     public static void main(String[] args) {
-        log.info(LOG_PREFIX + ": Starting application via main method...");
+        log.info(LOG_PREFIX + "Starting application via main method...");
 
-        log.info(LOG_PREFIX + ": Set full qualified class name as system property for defining the splash screen preloader.");
+        log.info(LOG_PREFIX + "Set full qualified class name as system property for defining the splash screen preloader.");
         System.setProperty("javafx.preloader", "com.wedasoft.javafxspringbootgradleapp.SplashScreenPreloader");
 
-        log.info(LOG_PREFIX + ": Launching the JavaFx application.");
+        log.info(LOG_PREFIX + "Launching the JavaFx application.");
         Application.launch(JfxSpringBootApp.class, args);
     }
 
@@ -39,8 +39,8 @@ public class JfxSpringBootAppLauncher {
 
         @Override
         public void init() {
-            log.info(LOG_PREFIX + ": Executing overridden 'init()' of JavaFx Application...");
-            log.info(LOG_PREFIX + ": Creating the spring application context.");
+            log.info(LOG_PREFIX + "Executing overridden 'init()' of JavaFx Application...");
+            log.info(LOG_PREFIX + "Creating the spring application context.");
             springApplicationContext = new SpringApplicationBuilder()
                     .sources(JfxSpringBootAppLauncher.class)
                     .initializers((ApplicationContextInitializer<GenericApplicationContext>) applicationContext -> {
@@ -53,14 +53,14 @@ public class JfxSpringBootAppLauncher {
 
         @Override
         public void start(Stage primaryStage) {
-            log.info(LOG_PREFIX + ": Executing overridden 'start()' of JavaFx Application...");
-            log.info(LOG_PREFIX + ": Publishing event 'JfxApplicationStartEvent'.");
+            log.info(LOG_PREFIX + "Executing overridden 'start()' of JavaFx Application...");
+            log.info(LOG_PREFIX + "Publishing event 'JfxApplicationStartEvent'.");
             springApplicationContext.publishEvent(new JfxApplicationStartEvent(primaryStage));
         }
 
         @Override
         public void stop() {
-            log.info(LOG_PREFIX + ": Executing overridden 'stop()' of JavaFx Application...");
+            log.info(LOG_PREFIX + "Executing overridden 'stop()' of JavaFx Application...");
             springApplicationContext.close();
             Platform.exit();
             System.exit(0);
@@ -86,7 +86,7 @@ public class JfxSpringBootAppLauncher {
         @Override
         public void onApplicationEvent(JfxApplicationStartEvent event) {
             try {
-                log.info(LOG_PREFIX + ": Computing 'JfxApplicationStartEvent'...");
+                log.info(LOG_PREFIX + "Computing 'JfxApplicationStartEvent'...");
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/wedasoft/javafxspringbootgradleapp/views/ui.fxml"));
                 fxmlLoader.setControllerFactory(springApplicationContext::getBean);
                 Parent root = fxmlLoader.load();
@@ -95,12 +95,12 @@ public class JfxSpringBootAppLauncher {
                 stage.setScene(scene);
                 stage.setTitle(this.applicationTitle);
                 stage.show();
-                log.info(LOG_PREFIX + ": JavaFx Spring boot application started.");
+                log.info(LOG_PREFIX + "JavaFx Spring boot application started.");
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
             if (SplashScreenPreloader.stage != null) {
-                log.info(LOG_PREFIX + ": Closing splash screen.");
+                log.info(LOG_PREFIX + "Closing splash screen.");
                 SplashScreenPreloader.stage.close();
             }
         }
