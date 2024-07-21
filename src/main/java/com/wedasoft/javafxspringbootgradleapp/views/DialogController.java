@@ -2,6 +2,7 @@ package com.wedasoft.javafxspringbootgradleapp.views;
 
 import com.wedasoft.javafxspringbootgradleapp.persistence.todo.TodoRepository;
 import javafx.application.Application;
+import javafx.application.HostServices;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,8 @@ public class DialogController {
 
     private final TodoRepository todoRepository;
     private final Application jfxApplication;
+    private final HostServices hostServices;
+    private final Application.Parameters parameters;
 
     @FXML
     private Label springBeanValueLabel;
@@ -24,7 +27,13 @@ public class DialogController {
 
     public void init() {
         springBeanValueLabel.setText(String.valueOf(todoRepository.count()));
-        jfxAppValueLabel.setText(jfxApplication.getHostServices().getDocumentBase());
+        jfxAppValueLabel.setText(String.format("""
+                        From Jfx Application: %s
+                        From HostServices: %s
+                        From Parameters: %s""",
+                jfxApplication.getHostServices().getDocumentBase(),
+                hostServices.getDocumentBase(),
+                parameters.getRaw()));
     }
 
 }
