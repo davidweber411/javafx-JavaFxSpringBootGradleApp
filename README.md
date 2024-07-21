@@ -22,9 +22,8 @@ A simple running application based on JavaFX, Spring Boot and Gradle.
 
 ### Features: While coding
 
-| Feature                                        | Available | How to use                                                                       |
-|------------------------------------------------|-----------|----------------------------------------------------------------------------------|
-| Dependency injection in Spring components.     | Yes.      | Use e. g. constructor or field injection, just like in Spring Boot.              |
-| Dependency injection in non-Spring components. | Yes.      | Use <code>getBean(...)</code> of <code>JfxSpringBootApp</code>.                  | 
-| Get Spring application context during runtime. | Yes.      | Use <code>getSpringApplicationContext()</code> of <code>JfxSpringBootApp</code>. |
-| Get JavaFX application during runtime.         | Yes.      | Use <code>getJavaFxApplication()</code> of <code>JfxSpringBootApp</code>.        |
+| Feature                                        | Available | How to use                                                          |
+|------------------------------------------------|-----------|---------------------------------------------------------------------|
+| Dependency injection in Spring components.     | Yes.      | Use e. g. constructor or field injection, just like in Spring Boot. |
+| Get Spring application context during runtime. | Yes.      | Use the bean <code>ApplicationContext</code>.                       |
+| Get JavaFX application during runtime.         | Yes.      | Use the bean <code>Application</code>.                              |
