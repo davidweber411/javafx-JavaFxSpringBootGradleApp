@@ -39,6 +39,7 @@ A simple running application based on JavaFX, Spring Boot and Gradle.
 #### Step 1: Make the controller a Spring component
 
     @Component
+    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
     @RequiredArgsConstructor
     public class UiController implements Initializable {
     
