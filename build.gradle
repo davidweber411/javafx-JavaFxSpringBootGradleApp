@@ -102,7 +102,7 @@ task buildExecutableJar(type: DefaultTask) {
     dependsOn bootJar
 }
 
-task packageAsExeWithJPackage(type: Exec) {
+task packageAsAppImage(type: Exec) {
     group = "${gradleTaskGroupName}"
     dependsOn buildExecutableJar
 
