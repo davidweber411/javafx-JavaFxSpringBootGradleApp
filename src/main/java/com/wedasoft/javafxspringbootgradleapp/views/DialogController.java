@@ -10,15 +10,17 @@ import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-@SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 @RequiredArgsConstructor
 public class DialogController {
 
     private final TodoRepository todoRepository;
+    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     private final Application jfxApplication;
+    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     private final HostServices hostServices;
+    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     private final Application.Parameters parameters;
 
     @FXML
