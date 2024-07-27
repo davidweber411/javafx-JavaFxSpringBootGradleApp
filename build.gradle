@@ -111,15 +111,19 @@ task packageAsAppImage(type: Exec) {
     doFirst {
         println "Loading Spring Boot application.properties..."
         final def applicationProperties = loadSpringApplicationProperties()
-        println "Spring Boot application.properties loaded."
+        println "\tSpring Boot application.properties loaded."
 
         println "Find and validate main jar..."
         final def mainJar = findAndValidateMainJar()
-        println "Main jar found. Path: ${mainJar.toString()}"
+        println "\tMain jar found.\n\tPath: ${mainJar.toString()}"
 
         println "Creating and preparing output dir..."
         final def outputDir = createAndPrepareOutputDir()
-        println "Output dir created. Path: ${outputDir.toString()}"
+        println "\tOutput dir created.\n\tPath: ${outputDir.toString()}"
+
+        println "Determining Java version for using JPackage..."
+        final def javaVersionString = getJavaVersionForJpackage();
+        println "\tJava version determined via 'java --version':\n\t${javaVersionString}"
 
         println("Creating JPackage command...")
         def jPackageCommand = [
@@ -131,11 +135,11 @@ task packageAsAppImage(type: Exec) {
                 "--name", (applicationProperties['spring.application.name'] ?: 'DefaultAppName'),
                 "--app-version", version
         ]
-        println "JPackage command created. Command without double quotes: ${jPackageCommand.join(' ')}"
+        println "\tJPackage command created.\n\tCommand without double quotes: ${jPackageCommand.join(' ')}"
 
         println "Executing JPackage command via commandLine..."
         commandLine jPackageCommand
-        println "JPackage command executed."
+        println "\tJPackage command executed."
     }
 }
 
@@ -160,4 +164,12 @@ private File createAndPrepareOutputDir() {
     }
     jPackageOutputDir.mkdirs()
     return jPackageOutputDir
+}
+
+private static String getJavaVersionForJpackage() {
+    def process = "java --version".execute()
+    def output = new StringBuffer()
+    process.consumeProcessOutput(output, new StringBuffer())
+    process.waitFor()
+    return output.toString().replaceAll("\n", "\n\t")
 }
