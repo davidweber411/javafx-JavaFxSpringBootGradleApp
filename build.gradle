@@ -19,7 +19,7 @@ repositories {
 ext {
     javaFxVersion = "17.0.10"
     javaVersion = 17
-    gradleTaskGroupName = 'application javafx spring boot'
+    customTasksGradleGroupName = '_custom tasks (javafx spring boot application)'
 }
 
 dependencies {
@@ -86,24 +86,26 @@ tasks.named('test') {
     useJUnitPlatform()
 }
 
-/* Custom tasks */
+//============================================================
+// CUSTOM TASKS
+//============================================================
 task cleanBuildDir(type: DefaultTask) {
-    group = "${gradleTaskGroupName}"
+    group = "${customTasksGradleGroupName}"
     dependsOn clean
 }
 
 task runJfxSpringBootApp(type: DefaultTask) {
-    group = "${gradleTaskGroupName}"
+    group = "${customTasksGradleGroupName}"
     dependsOn bootRun
 }
 
 task buildExecutableJar(type: DefaultTask) {
-    group = "${gradleTaskGroupName}"
+    group = "${customTasksGradleGroupName}"
     dependsOn bootJar
 }
 
 task packageAsAppImage(type: Exec) {
-    group = "${gradleTaskGroupName}"
+    group = "${customTasksGradleGroupName}"
     dependsOn buildExecutableJar
 
     doFirst {
