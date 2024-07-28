@@ -1,4 +1,8 @@
 //file:noinspection ConfigurationAvoidance
+//file:noinspection GrMethodMayBeStatic
+
+import java.util.stream.Collectors
+
 plugins {
     id 'java'
     id 'org.springframework.boot' version '3.3.1'
@@ -124,14 +128,14 @@ task packageAsAppImage(type: Exec) {
         println "\tOutput dir created.\n\tPath: ${outputDir.toString()}"
 
         println "Determining Java version for using JPackage..."
-        final def javaVersionString = getJavaVersionForJpackage();
-        println "\tJava version determined via 'java --version':\n\t${javaVersionString}"
+        final def javaVersionString = getJavaVersionForJpackage()
+        println "\tJava version determined via 'java --version':\n${javaVersionString}"
 
         println("Creating JPackage command...")
         ArrayList<String> jPackageCommand = [
                 "jpackage",
                 "--type", "app-image",
-                "--input", file("$buildDir/libs").toString(),
+                "--input", new File(getBuildDir(), "libs").toString(),
                 "--main-jar", mainJar.name,
                 "--dest", outputDir.toString(),
                 "--name", (applicationProperties['spring.application.name'] ?: 'DefaultAppName'),
@@ -152,7 +156,7 @@ private Properties loadSpringApplicationProperties() {
 }
 
 private File findAndValidateMainJar() {
-    def mainJar = file("$buildDir/libs").listFiles().find { it.name.endsWith('.jar') }
+    def mainJar = new File(getBuildDir(), "libs").listFiles().find { it.name.endsWith('.jar') }
     if (mainJar == null) {
         throw new GradleException("No JAR file found in build/libs.")
     }
@@ -160,7 +164,7 @@ private File findAndValidateMainJar() {
 }
 
 private File createAndPrepareOutputDir() {
-    File jPackageOutputDir = file("$buildDir/jpackage") as File
+    File jPackageOutputDir = new File(getBuildDir(), "jpackage")
     if (jPackageOutputDir.exists()) {
         jPackageOutputDir.deleteDir()
     }
@@ -168,10 +172,17 @@ private File createAndPrepareOutputDir() {
     return jPackageOutputDir
 }
 
-private static String getJavaVersionForJpackage() {
+private File getBuildDir() {
+    return layout.getBuildDirectory().getAsFile().get() as File
+}
+
+private String getJavaVersionForJpackage() {
     def process = "java --version".execute()
     def output = new StringBuffer()
     process.consumeProcessOutput(output, new StringBuffer())
     process.waitFor()
-    return output.toString().replaceAll("\n", "\n\t")
+
+    return "\t" + Arrays.stream(output.toString().split("\n"))
+            .filter { !it.isBlank() }
+            .collect(Collectors.joining("\n\t"))
 }
