@@ -107,7 +107,8 @@ task runJfxSpringBootApp(type: DefaultTask) {
 
 task buildExecutableJar(type: DefaultTask) {
     group = "${customTasksGradleGroupName}"
-    dependsOn bootJar
+    dependsOn cleanBuildDir, bootJar
+    mustRunAfter(cleanBuildDir)
 }
 
 task packageAsAppImage(type: Exec) {
