@@ -42,21 +42,31 @@ public class JfxSpringBootAppLauncher {
         public void init() {
             log.info(LOG_PREFIX + "Executing overridden 'init()' of JavaFx Application...");
             log.info(LOG_PREFIX + "Creating the spring application context.");
-            springApplicationContext = new SpringApplicationBuilder()
-                    .sources(JfxSpringBootAppLauncher.class)
-                    .initializers((ApplicationContextInitializer<GenericApplicationContext>) applicationContext -> {
-                        applicationContext.registerBean(Application.class, () -> this);
-                        applicationContext.registerBean(Parameters.class, this::getParameters);
-                        applicationContext.registerBean(HostServices.class, this::getHostServices);
-                    })
-                    .run(getParameters().getRaw().toArray(new String[0]));
+            try {
+                springApplicationContext = new SpringApplicationBuilder()
+                        .sources(JfxSpringBootAppLauncher.class)
+                        .initializers((ApplicationContextInitializer<GenericApplicationContext>) applicationContext -> {
+                            applicationContext.registerBean(Application.class, () -> this);
+                            applicationContext.registerBean(Parameters.class, this::getParameters);
+                            applicationContext.registerBean(HostServices.class, this::getHostServices);
+                        })
+                        .run(getParameters().getRaw().toArray(new String[0]));
+            } catch (Throwable t) {
+                log.error(t.getMessage(), t);
+                throw new RuntimeException(t);
+            }
         }
 
         @Override
         public void start(Stage primaryStage) {
             log.info(LOG_PREFIX + "Executing overridden 'start()' of JavaFx Application...");
             log.info(LOG_PREFIX + "Publishing event 'JfxApplicationStartEvent'.");
-            springApplicationContext.publishEvent(new JfxApplicationStartEvent(primaryStage));
+            try {
+                springApplicationContext.publishEvent(new JfxApplicationStartEvent(primaryStage));
+            } catch (Throwable t) {
+                log.error(t.getMessage(), t);
+                throw new RuntimeException(t);
+            }
         }
 
         @Override
