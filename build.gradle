@@ -82,7 +82,9 @@ hibernate {
     }
 }
 
+//noinspection GroovyAssignabilityCheck
 tasks.named('test') {
+    //noinspection GrUnresolvedAccess
     useJUnitPlatform()
 }
 
@@ -126,7 +128,7 @@ task packageAsAppImage(type: Exec) {
         println "\tJava version determined via 'java --version':\n\t${javaVersionString}"
 
         println("Creating JPackage command...")
-        def jPackageCommand = [
+        ArrayList<String> jPackageCommand = [
                 "jpackage",
                 "--type", "app-image",
                 "--input", file("$buildDir/libs").toString(),
