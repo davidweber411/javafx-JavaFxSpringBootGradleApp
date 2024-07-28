@@ -15,10 +15,11 @@ A simple running application based on JavaFX, Spring Boot and Gradle.
 
 ### Features: Run and package
 
-| Feature                         | How to use                                |
-|---------------------------------|-------------------------------------------|
-| Run the application in the IDE. | Use the gradle task <code>bootRun</code>. |
-| Package as executable JAR.      | Use the gradle task <code>bootJar</code>. |
+| Feature                                     | How to use                                                                    |
+|---------------------------------------------|-------------------------------------------------------------------------------|
+| Run the application in the IDE.             | Use the gradle task <code>runJfxSpringBootApp</code> or <code>bootRun</code>. |
+| Package as executable JAR.                  | Use the gradle task <code>buildExecutableJar</code> or <code>bootJar</code>.  |
+| Package as executable App Image (e.g. EXE). | Use the gradle task <code>packageAsAppImage</code>.                           |
 
 ### Features: While coding
 
