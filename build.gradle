@@ -127,6 +127,9 @@ task packageAsAppImage(type: Exec) {
         final def outputDir = createAndPrepareOutputDir()
         println "\tOutput dir created.\n\tPath: ${outputDir.toString()}"
 
+        println "Loading app icon..."
+        final def appIconFilePath = getAppIconFilePath();
+
         println "Determining Java version for using JPackage..."
         final def javaVersionString = getJavaVersionForJpackage()
         println "\tJava version determined via 'java --version':\n${javaVersionString}"
@@ -139,7 +142,8 @@ task packageAsAppImage(type: Exec) {
                 "--main-jar", mainJar.name,
                 "--dest", outputDir.toString(),
                 "--name", (applicationProperties['spring.application.name'] ?: 'DefaultAppName'),
-                "--app-version", version
+                "--app-version", version,
+                "--icon", appIconFilePath
         ]
         println "\tJPackage command created.\n\tCommand without double quotes: ${jPackageCommand.join(' ')}"
 
@@ -170,6 +174,19 @@ private File createAndPrepareOutputDir() {
     }
     jPackageOutputDir.mkdirs()
     return jPackageOutputDir
+}
+
+private String getAppIconFilePath() {
+    println "\tHint: Use '.ico' as preferred file format. Other formats may not be supported correctly."
+    final String resourcePath = "src/main/resources/assets/app-icon.ico"
+    File file = project.file(resourcePath) as File
+    if (!file.exists() || !file.isFile()) {
+        println "\tWARN: No app icon file found at path: '${file.getCanonicalPath()}'."
+        println "\tWARN: App icon is not used."
+        return "";
+    }
+    println "\tApp icon loaded.\n\tPath: ${file.getCanonicalPath()}"
+    return file.getCanonicalPath()
 }
 
 private File getBuildDir() {
