@@ -115,24 +115,11 @@ task packageAsAppImage(type: Exec) {
     dependsOn buildExecutableJar
 
     doFirst {
-        println "Loading Spring Boot application.properties..."
         final def applicationProperties = loadSpringApplicationProperties()
-        println "\tSpring Boot application.properties loaded."
-
-        println "Find and validate main jar..."
         final def mainJar = findAndValidateMainJar()
-        println "\tMain jar found.\n\tPath: ${mainJar.toString()}"
-
-        println "Creating and preparing output dir..."
         final def outputDir = createAndPrepareOutputDir()
-        println "\tOutput dir created.\n\tPath: ${outputDir.toString()}"
-
-        println "Loading app icon..."
-        final def appIconFilePath = getAppIconFilePath();
-
-        println "Determining Java version for using JPackage..."
-        final def javaVersionString = getJavaVersionForJpackage()
-        println "\tJava version determined via 'java --version':\n${javaVersionString}"
+        final def appIconFilePath = getAppIconFilePath()
+        printJavaVersionInfoForJpackage()
 
         println("Creating JPackage command...")
         ArrayList<String> jPackageCommand = [
@@ -145,45 +132,56 @@ task packageAsAppImage(type: Exec) {
                 "--app-version", version,
                 "--icon", appIconFilePath
         ]
-        println "\tJPackage command created.\n\tCommand without double quotes: ${jPackageCommand.join(' ')}"
+        println "\tJPackage command created."
+        println "\tUsed command without double quotes: ${jPackageCommand.join(' ')}"
 
         println "Executing JPackage command via commandLine..."
         commandLine jPackageCommand
         println "\tJPackage command executed."
+        println "Packaging as app image finished."
     }
 }
 
 private Properties loadSpringApplicationProperties() {
+    println "Loading Spring Boot application.properties..."
     def applicationProperties = new Properties()
     file('src/main/resources/application.properties').withInputStream { applicationProperties.load(it) }
+    println "\tSpring Boot application.properties loaded."
     return applicationProperties
 }
 
 private File findAndValidateMainJar() {
+    println "Find and validate main jar..."
     def mainJar = new File(getBuildDir(), "libs").listFiles().find { it.name.endsWith('.jar') }
     if (mainJar == null) {
         throw new GradleException("No JAR file found in build/libs.")
     }
+    println "\tMain jar found."
+    println "\tPath: ${mainJar.toString()}"
     return mainJar
 }
 
 private File createAndPrepareOutputDir() {
+    println "Creating and preparing output dir..."
     File jPackageOutputDir = new File(getBuildDir(), "jpackage")
     if (jPackageOutputDir.exists()) {
         jPackageOutputDir.deleteDir()
     }
     jPackageOutputDir.mkdirs()
+    println "\tOutput dir created."
+    println "\tPath: ${jPackageOutputDir.toString()}"
     return jPackageOutputDir
 }
 
 private String getAppIconFilePath() {
+    println "Loading app icon..."
     println "\tHint: Use '.ico' as preferred file format. Other formats may not be supported correctly."
     final String resourcePath = "src/main/resources/assets/app-icon.ico"
     File file = project.file(resourcePath) as File
     if (!file.exists() || !file.isFile()) {
         println "\tWARN: No app icon file found at path: '${file.getCanonicalPath()}'."
         println "\tWARN: App icon is not used."
-        return "";
+        return ""
     }
     println "\tApp icon loaded.\n\tPath: ${file.getCanonicalPath()}"
     return file.getCanonicalPath()
@@ -193,13 +191,16 @@ private File getBuildDir() {
     return layout.getBuildDirectory().getAsFile().get() as File
 }
 
-private String getJavaVersionForJpackage() {
+private void printJavaVersionInfoForJpackage() {
+    println "Determining Java version for using JPackage..."
     def process = "java --version".execute()
     def output = new StringBuffer()
     process.consumeProcessOutput(output, new StringBuffer())
     process.waitFor()
 
-    return "\t" + Arrays.stream(output.toString().split("\n"))
+    def javaVersionString = Arrays.stream(output.toString().split("\n"))
             .filter { !it.isBlank() }
             .collect(Collectors.joining("\n\t"))
+    println "\tJava version determined via 'java --version':"
+    println "\t${javaVersionString}"
 }
