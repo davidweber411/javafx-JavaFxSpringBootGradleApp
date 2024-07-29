@@ -118,7 +118,7 @@ task packageAsAppImage(type: Exec) {
     doFirst {
         final def applicationProperties = loadSpringApplicationProperties()
         final def mainJar = findAndValidateMainJar()
-        final def outputDir = createAndPrepareOutputDir()
+        final def outputDir = createAndPrepareJpackageOutputDir()
         final def appIconFilePath = getAppIconFilePath()
         printJavaVersionInfoForJpackage()
 
@@ -143,6 +143,45 @@ task packageAsAppImage(type: Exec) {
     }
 }
 
+//task packageAsNativeImage(type: Exec) {
+//    group = "${customTasksGradleGroupName}"
+//    dependsOn buildExecutableJar
+//    mustRunAfter(buildExecutableJar)
+//
+//    doFirst {
+//        printWorkingDir()
+//        final def graalVmOutputDir = createAndPrepareGraalVmOutputDir()
+//        /* D:\Projekte\IdeaProjects\OpenSourceProjekte\JavaFxSpringBootGradleApp\build\libs\JavaFxSpringBootGradleApp-2.5.0.jar */
+//        final def mainJarPath = findAndValidateMainJar().toPath().toString()
+//
+//        println("Creating GraalVM command...")
+//        final def nativeImageCmdPath = Paths.get(
+//                System.getProperty("user.home"),
+//                ".jdks",
+//                "graalvm-jdk-17.0.11",
+//                "bin",
+//                "native-image.cmd").toString()
+//        final def graalVmCommand = [
+//                nativeImageCmdPath,
+//                "-jar", mainJarPath,
+//                "-H:Name=your-application",  // Optional: Specify the output name
+//                "--no-fallback",  // Optional: Disables fallback image, to ensure full native image
+//                "--no-server"  // Optional: Prevents native-image from starting the HTTP server
+//        ]
+//        //        def graalVmCommand = [
+//        //                "java",
+//        //                "--version"]
+//        println "\tGraalVM command created."
+//        println "\tUsed command without double quotes: ${graalVmCommand.join(' ')}"
+//
+//        println "Executing GraalVM command via commandLine..."
+//        commandLine graalVmCommand
+//        println "\tGraalVM command executed."
+//
+//        println "Packaging as native image finished."
+//    }
+//}
+
 private Properties loadSpringApplicationProperties() {
     println "Loading Spring Boot application.properties..."
     def applicationProperties = new Properties()
@@ -162,16 +201,25 @@ private File findAndValidateMainJar() {
     return mainJar
 }
 
-private File createAndPrepareOutputDir() {
-    println "Creating and preparing output dir..."
-    File jPackageOutputDir = new File(getBuildDir(), "jpackage")
-    if (jPackageOutputDir.exists()) {
-        jPackageOutputDir.deleteDir()
+private File createAndPrepareJpackageOutputDir() {
+    println "Creating and preparing output dir for JPackage app image..."
+    return createOutputDir("jpackage")
+}
+
+//private File createAndPrepareGraalVmOutputDir() {
+//    println "Creating and preparing output dir for GraalVM native image..."
+//    return createOutputDir("graalvm")
+//}
+
+private File createOutputDir(String dirName) {
+    File dir = new File(getBuildDir(), dirName)
+    if (dir.exists()) {
+        dir.deleteDir()
     }
-    jPackageOutputDir.mkdirs()
+    dir.mkdirs()
     println "\tOutput dir created."
-    println "\tPath: ${jPackageOutputDir.toString()}"
-    return jPackageOutputDir
+    println "\tPath: ${dir.toString()}"
+    return dir
 }
 
 private String getAppIconFilePath() {
