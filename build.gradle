@@ -42,10 +42,16 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
 
     // JavaFX
-    implementation "org.openjfx:javafx-controls:${javaFxVersion}"
+    implementation "org.openjfx:javafx-base:${javaFxVersion}:win"
+    implementation "org.openjfx:javafx-base:${javaFxVersion}:linux"
+    implementation "org.openjfx:javafx-base:${javaFxVersion}:mac"
+    implementation "org.openjfx:javafx-controls:${javaFxVersion}:win"
+    implementation "org.openjfx:javafx-controls:${javaFxVersion}:linux"
+    implementation "org.openjfx:javafx-controls:${javaFxVersion}:mac"
+    implementation "org.openjfx:javafx-graphics:${javaFxVersion}:win"
+    implementation "org.openjfx:javafx-graphics:${javaFxVersion}:linux"
+    implementation "org.openjfx:javafx-graphics:${javaFxVersion}:mac"
     implementation "org.openjfx:javafx-fxml:${javaFxVersion}"
-    implementation "org.openjfx:javafx-base:${javaFxVersion}"
-    implementation "org.openjfx:javafx-graphics:${javaFxVersion}"
 
     // WedasoftFX
     implementation 'com.wedasoft:wedasoftfxguicommons:1.0.0'
